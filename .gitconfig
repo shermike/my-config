@@ -1,0 +1,48 @@
+[user]
+	name = Mikhail Sherstennikov
+	email = msherstennikov@smachines.com
+[credential]
+	helper = cache
+[alias]
+	br = branch
+    amend = ! git add -u && git commit --amend
+    ci = commit
+    co = checkout
+    cp = cherry-pick
+    dt = difftool --dir-diff
+    ls = log --decorate --oneline --graph
+    ll = log --decorate --stat
+    mt = mergetool -y
+    st = status
+    ss = submodule status
+    info = describe --tags
+    up = ! git pull --rebase --prune && git submodule update --init --rebase -- cmake dashboard tests/psim tests/xsim os/linux qemu/qemu-2.0/qiol qemu/qemu-2.0/qemu_sim qemu/qemu-2.0/xarc gdb_binutils ngen
+    unci = ! git reset --soft HEAD^ && git reset HEAD
+    amend = ! git add . && git ci --amend --no-edit
+[diff]
+	tool = meld
+[difftool]
+  prompt = false
+
+[apply]
+  whitespace = fix
+
+[color]
+  ui = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  old = red
+  new = green
+#[color "status"]
+#  added = yellow
+#  changed = green
+#  untracked = cyan
+[core]
+	excludesfile = ~/.gitignore
+[merge]
+	tool = meld
