@@ -1,9 +1,7 @@
-colorscheme torte
-
-set hlsearch
+colorscheme koehler
 
 set clipboard=unnamed
-source ~/.vim/mswin.vim
+"source $VIMRUNTIME/mswin.vim
 behave mswin
 
 map <S-Insert> <MiddleMouse>
@@ -12,6 +10,7 @@ map! <S-Insert> <MiddleMouse>
 autocmd FileChangedShell * echohl WarningMsg | echo "File changed shell." | echohl None
 autocmd! bufwritepost .vimrc source %
 
+set hlsearch
 set nocompatible
 set nowrap
 set tabstop=4
@@ -30,17 +29,14 @@ set autoindent
 set noswapfile
 set dir=~/.vim/swap/
 set nobackup
-set backupdir=~/.vim/backup/
+"set backupdir=~/.vim/backup/
 set mouse=a
 
 set wildmenu
 set wcm=<TAB>
 set wildmode=list:longest,full
 
-set exrc
-set secure
-
-syntax on
+"syntax on
 
 vnoremap <C-c> "*y
 
@@ -61,8 +57,6 @@ nmap <C-TAB> :tabnext<CR>
 imap <C-TAB> <Esc>:tabnext<CR>i
 nmap <C-t> :tabnew<CR>
 imap <C-t> <Esc>:tabnew<CR>a
-
-nnoremap <F3> :set hlsearch!<CR>
 "nmap <C-w> :tabclose<CR>
 "imap <C-w> <Esc>:tabclose<CR>
 
@@ -96,6 +90,24 @@ function! s:ExecuteInShell(command)
     silent! execute 'nnoremap <silent> <buffer> q :q<CR>'
     silent! execute 'AnsiEsc'
     echo 'Shell command ' . command . ' executed.'
+endfunction
+function! s:RunShellCommand(cmdline)
+  echo a:cmdline
+  let expanded_cmdline = a:cmdline
+  for part in split(a:cmdline, ' ')
+     if part[0] =~ '\v[%#<]'
+        let expanded_part = fnameescape(expand(part))
+        let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
+     endif
+  endfor
+  botright new
+  setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
+  call setline(1, 'You entered:    ' . a:cmdline)
+  call setline(2, 'Expanded Form:  ' .expanded_cmdline)
+  call setline(3,substitute(getline(2),'.','=','g'))
+  execute '$read !'. expanded_cmdline
+  setlocal nomodifiable
+  1
 endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 

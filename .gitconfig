@@ -16,7 +16,7 @@
     st = status
     ss = submodule status
     info = describe --tags
-    up = ! git pull --rebase --prune && git submodule update --init --rebase -- cmake dashboard tests/psim tests/xsim os/linux qemu/qemu-2.0/qiol qemu/qemu-2.0/qemu_sim qemu/qemu-2.0/xarc gdb_binutils ngen
+    up = ! git pull --rebase --prune
     unci = ! git reset --soft HEAD^ && git reset HEAD
     amend = ! git add . && git ci --amend --no-edit
 [diff]
@@ -45,4 +45,4 @@
 [core]
 	excludesfile = ~/.gitignore
 [merge]
-	tool = meld
+	tool = vimdiff

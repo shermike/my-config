@@ -11,11 +11,6 @@ alias ls="ls --color=auto"
 
 alias emacs='emacs -nw'
 alias ec='emacsclient -n'
-alias vim=vimx
-alias cfr='condor_free -d'
-alias lq='condor_q -s msherstennik'
-alias cq='/sw/tools/bin/grid/condor_queue -t | grep msherstenn'
-alias split_ir='/sw/git/sw.git/trunk/bt/utils/perf/split_ir'
 alias ..="cd .."
 alias ..2="cd ../.."
 alias ..3="cd ../../.."
@@ -27,6 +22,8 @@ alias ps1long="export PS1='\[\e[0;32m\][\h \w]\$\[\e[0m\] '"
 alias hist="history |grep "
 alias bc='bc -ql'
 alias le='less -s -M -N -G'
+alias "c=xclip"
+alias "v=xclip -o"
 alias "cpwd=pwd|xclip"
 alias "ppwd=popd"
 alias gti='git'
@@ -34,10 +31,8 @@ alias fix='printf "\e[?2004l"'
 alias gv='gvim -p --remote-tab-silent'
 alias brld='. ~/.bashrc'
 alias grep='grep --color=auto'
-alias loc='cd /local_disk/msherstennikov'
-alias src='cd /local_disk/msherstennikov/sw/bt/src-4.5'
 
-export EDITOR=vimx
+export EDITOR=vim
 export VIEWER=less
 
 export LESSANSIENDCHARS='mK'
@@ -47,5 +42,16 @@ export HISTSIZE=
 export HISTFILESIZE=
 export HISTFILE=~/.bash_eternal_history
 export HISTTIMEFORMAT="%d/%m/%y %T "
+#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+SVN_EDITOR=vim
 
 shopt -s checkwinsize
+
+alias install='sudo apt-get install'
+
+alias hex='hexdump -C -v'
+alias scr=screen
+
+
+alias tmux="TERM=xterm-256color tmux"
