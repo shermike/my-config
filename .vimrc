@@ -1,22 +1,84 @@
-colorscheme koehler
+set shell=/usr/intel/bin/bash
 
-set clipboard=unnamed
-"source $VIMRUNTIME/mswin.vim
-behave mswin
+syntax on
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set cindent
+set hlsearch
 
-map <S-Insert> <MiddleMouse>
-map! <S-Insert> <MiddleMouse>
+inoremap <S-Tab> <C-V><Tab>
+
+if has ('gui_running')
+    set guifont=Monospace\ 12
+endif
+
+set backspace=2
+" == Split config ==
+set winheight=30
+set winminheight=1
+nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
+
+" == Tags == 
+" search tags file from current dir up to the root dir
+set tags=./tags;/
+" Ctrl-] - go to definition
+" Ctrl-T - jump bach from the definition
+" Ctrl-W-Ctrl-] - open the definition in a horisontal split
+" Ctrl-\ - open the definition in a new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+
+" == Pathogen ==
+filetype off
+call pathogen#helptags()
+call pathogen#infect()
+filetype plugin indent on
+
+" == OmniCppComplete ==
+set nocp
+filetype plugin on
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
+" <Ctrl-Space> instead of <Ctrl-X><Ctrl-O> for autocompletion
+inoremap <Nul> <C-x><C-o>
+
+" == Taglist ==
+" open taglist by F12
+nnoremap <silent> <F12> :TlistToggle<CR>
+" place it to the right of main window
+let Tlist_Use_Right_Window=1
+" list tabs on for current file
+" let Tlist_Show_One_File=1
+" automatically close the fold of inactive files 
+let TList_File_Fold_Auto_Close=1
+
+" == NERDTree ==
+" :help NERDTreeMappings
+" open nerdtree
+nnoremap <silent> <F11> :NERDTree<CR>
 
 autocmd FileChangedShell * echohl WarningMsg | echo "File changed shell." | echohl None
 autocmd! bufwritepost .vimrc source %
 
-set hlsearch
 set nocompatible
 set nowrap
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set showcmd
+" == Fugitive ==
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+set laststatus=2
+
 set showmatch
 set laststatus=2
 set title
@@ -29,14 +91,63 @@ set autoindent
 set noswapfile
 set dir=~/.vim/swap/
 set nobackup
-"set backupdir=~/.vim/backup/
+set backupdir=~/.vim/backup/
 set mouse=a
 
 set wildmenu
 set wcm=<TAB>
 set wildmode=list:longest,full
 
-"syntax on
+set exrc
+set secure
+
+map <F2> :!ls<CR>:e
+
+syntax on
+
+vnoremap <C-c> "*y
+
+set mouse=a
+
+map Q :qa<CR>
+
+nnoremap <silent> . :tabn<CR>
+nnoremap <silent> , :tabp<CR>
+
+map gn :bn<cr>
+map gp :bp<cr>
+map gd :bd<cr>
+
+:set ignorecase
+:set smartcase
+:set number
+
+:nnoremap <F5> :buffers<CR>:buffer<Space>
+
+set clipboard=unnamedplus
+
+colorscheme desert
+
+set noswapfile
+
+
+" first, enable status line always
+set laststatus=2
+
+" now set it up to change the status line based on mode
+if version >= 700
+  au InsertEnter * hi StatusLine term=reverse ctermbg=5 gui=undercurl guisp=Magenta
+  au InsertLeave * hi StatusLine term=reverse ctermfg=0 ctermbg=2 gui=bold,reverse
+endif
+
+set wildmenu
+set wcm=<TAB>
+set wildmode=list:longest,full
+
+set exrc
+set secure
+
+syntax on
 
 vnoremap <C-c> "*y
 
@@ -57,6 +168,10 @@ nmap <C-TAB> :tabnext<CR>
 imap <C-TAB> <Esc>:tabnext<CR>i
 nmap <C-t> :tabnew<CR>
 imap <C-t> <Esc>:tabnew<CR>a
+
+"nmap <C-d> :bp|bd #
+
+nnoremap <F3> :set hlsearch!<CR>
 "nmap <C-w> :tabclose<CR>
 "imap <C-w> <Esc>:tabclose<CR>
 
@@ -90,24 +205,6 @@ function! s:ExecuteInShell(command)
     silent! execute 'nnoremap <silent> <buffer> q :q<CR>'
     silent! execute 'AnsiEsc'
     echo 'Shell command ' . command . ' executed.'
-endfunction
-function! s:RunShellCommand(cmdline)
-  echo a:cmdline
-  let expanded_cmdline = a:cmdline
-  for part in split(a:cmdline, ' ')
-     if part[0] =~ '\v[%#<]'
-        let expanded_part = fnameescape(expand(part))
-        let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
-     endif
-  endfor
-  botright new
-  setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-  call setline(1, 'You entered:    ' . a:cmdline)
-  call setline(2, 'Expanded Form:  ' .expanded_cmdline)
-  call setline(3,substitute(getline(2),'.','=','g'))
-  execute '$read !'. expanded_cmdline
-  setlocal nomodifiable
-  1
 endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
