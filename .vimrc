@@ -1,4 +1,6 @@
-set shell=/usr/intel/bin/bash
+
+source $VIMRUNTIME/mswin.vim
+behave mswin
 
 syntax on
 set expandtab
@@ -6,6 +8,8 @@ set shiftwidth=4
 set tabstop=4
 set cindent
 set hlsearch
+" Disable autoindent when pasting text
+set paste
 
 inoremap <S-Tab> <C-V><Tab>
 
@@ -16,7 +20,7 @@ endif
 set backspace=2
 " == Split config ==
 set winheight=30
-set winminheight=1
+"set winminheight=1
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 
@@ -28,44 +32,6 @@ set tags=./tags;/
 " Ctrl-W-Ctrl-] - open the definition in a horisontal split
 " Ctrl-\ - open the definition in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-
-" == Pathogen ==
-filetype off
-call pathogen#helptags()
-call pathogen#infect()
-filetype plugin indent on
-
-" == OmniCppComplete ==
-set nocp
-filetype plugin on
-let OmniCpp_NamespaceSearch = 1
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_ShowAccess = 1
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menuone,menu,longest,preview
-" <Ctrl-Space> instead of <Ctrl-X><Ctrl-O> for autocompletion
-inoremap <Nul> <C-x><C-o>
-
-" == Taglist ==
-" open taglist by F12
-nnoremap <silent> <F12> :TlistToggle<CR>
-" place it to the right of main window
-let Tlist_Use_Right_Window=1
-" list tabs on for current file
-" let Tlist_Show_One_File=1
-" automatically close the fold of inactive files 
-let TList_File_Fold_Auto_Close=1
-
-" == NERDTree ==
-" :help NERDTreeMappings
-" open nerdtree
-nnoremap <silent> <F11> :NERDTree<CR>
 
 autocmd FileChangedShell * echohl WarningMsg | echo "File changed shell." | echohl None
 autocmd! bufwritepost .vimrc source %
@@ -126,7 +92,7 @@ map gd :bd<cr>
 
 set clipboard=unnamedplus
 
-colorscheme desert
+colorscheme ron
 
 set noswapfile
 
@@ -209,3 +175,5 @@ endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
 command! T tabnew
+
+set guifont=Monospace
