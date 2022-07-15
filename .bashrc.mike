@@ -1,58 +1,56 @@
-# Mike's bashrc
+(set -o igncr) 2>/dev/null && set -o igncr; # this comment is needed
 
-#export PS1="\u@\h:\w> "
-export PS1='\[\e[0;32m\][\h \w]\$\[\e[0m\] '
-#export PS1='\[\e[0;32m\][\h]\$\[\e[0m\] '
+export HISTSIZE=99999999999
+export HISTFILESIZE=1000000000
+export HISTFILE=~/.bash_eternal_history
+export HISTTIMEFORMAT="%d/%m/%y %T "
+shopt -s histappend
+PROMPT_COMMAND="history -a; echo -n -e '\033[35m'; date +'%m.%d.%Y %H:%M:%S'" # $PROMPT_COMMAND"
+#PROMPT_COMMAND=
+#PROMPT_COMMAND="history -a"
+#PROMPT_COMMAND="history -a; history -r"
+export PS1="\[\033[38;5;76m\]\u@\h:\[$(tput sgr0)\]\[\033[38;5;22m\] \[$(tput sgr0)\]\[\033[38;5;76m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\n\[$(tput sgr0)\]\[\033[38;5;76m\]\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
 
-export PROMPT_COMMAND=
+#export PS1="\[\033[38;5;76m\]\u@\h:\[$(tput sgr0)\]\[\033[38;5;22m\] \[$(tput sgr0)\]\[\033[38;5;76m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\n\[$(tput sgr0)\]\[\033[38;5;76m\][\D{%m.%d %H:%M:%S}] \\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
 
-alias l='ls -la | grep "^d" && ls -la | grep -v "^d"'
-alias ls="ls --color=auto"
+alias l='less -R'
+alias v=vim
+alias vd=vimdiff
+alias hex='hexdump -C -v'
+alias t='tig --no-merges'
+alias g=git
+alias tmux="TERM=xterm-256color tmux"
+alias brld='. ~/.bashrc'
+alias np="/c/Program\ Files/Notepad++/notepad++.exe"
+alias ads="adb shell"
+alias fd="find . -name"
+alias nj="ninja -j7"
+alias res='echo $?'
+alias rp=realpath
+alias re=readelf
+alias gs="gdbserver 127.0.0.1:1234"
+alias gr="gdb --args"
 
-alias emacs='emacs -nw'
-alias ec='emacsclient -n'
 alias ..="cd .."
 alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
-alias kj='kill %%'
-alias ps1short="export PS1='\[\e[0;32m\][\h]\$\[\e[0m\] '"
-alias ps1long="export PS1='\[\e[0;32m\][\h \w]\$\[\e[0m\] '"
-alias hist="history |grep "
-alias bc='bc -ql'
-alias le='less -s -M -N -G'
-alias "c=xclip"
-alias "v=xclip -o"
-alias "cpwd=pwd|xclip"
-alias "ppwd=popd"
-alias gti='git'
-alias fix='printf "\e[?2004l"'
-alias gv='gvim -p --remote-tab-silent'
-alias brld='. ~/.bashrc'
-alias grep='grep --color=auto'
+alias kj="kill -9 $(jobs -p)"
 
-export EDITOR=vim
-export VIEWER=less
+# Convert binary file to hex text view.
+bh() {
+    hexdump -C -v $1 > "$1.hex"
+}
 
-export LESSANSIENDCHARS='mK'
+hv() {
+    hexdump -C -v $1 | less
+}
 
-# bash
-export HISTSIZE=
-export HISTFILESIZE=
-export HISTFILE=~/.bash_eternal_history
-export HISTTIMEFORMAT="%d/%m/%y %T "
-#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+=() {
+    local IFS=' '
+    local calc="${*//p/+}"
+    calc="${calc//x/*}"
+    bc -l <<<"scale=10;$calc"
+}
 
-SVN_EDITOR=vim
-
-shopt -s checkwinsize
-
-alias install='sudo apt-get install'
-
-alias hex='hexdump -C -v'
-alias scr=screen
-
-
-alias tmux="TERM=xterm-256color tmux"
-dfg
