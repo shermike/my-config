@@ -55,3 +55,4 @@ alias scr=screen
 
 
 alias tmux="TERM=xterm-256color tmux"
+dfg
