@@ -5,14 +5,13 @@ export HISTFILESIZE=1000000000
 export HISTFILE=~/.bash_eternal_history
 export HISTTIMEFORMAT="%d/%m/%y %T "
 shopt -s histappend
-PROMPT_COMMAND="history -a; echo -n -e '\033[35m'; date +'%m.%d.%Y %H:%M:%S'" # $PROMPT_COMMAND"
+#PROMPT_COMMAND="history -a; echo -n -e '\033[35m'; date +'%m.%d.%Y %H:%M:%S'" # $PROMPT_COMMAND"
 #PROMPT_COMMAND=
-#PROMPT_COMMAND="history -a"
+PROMPT_COMMAND="history -a"
 #PROMPT_COMMAND="history -a; history -r"
 export PS1="\[\033[38;5;76m\]\u@\h:\[$(tput sgr0)\]\[\033[38;5;22m\] \[$(tput sgr0)\]\[\033[38;5;76m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\n\[$(tput sgr0)\]\[\033[38;5;76m\]\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
 
-#export PS1="\[\033[38;5;76m\]\u@\h:\[$(tput sgr0)\]\[\033[38;5;22m\] \[$(tput sgr0)\]\[\033[38;5;76m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\n\[$(tput sgr0)\]\[\033[38;5;76m\][\D{%m.%d %H:%M:%S}] \\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
-
+alias hreload='history -a; history -r'
 alias l='less -R'
 alias v=vim
 alias vd=vimdiff
@@ -21,7 +20,6 @@ alias t='tig --no-merges'
 alias g=git
 alias tmux="TERM=xterm-256color tmux"
 alias brld='. ~/.bashrc'
-alias np="/c/Program\ Files/Notepad++/notepad++.exe"
 alias ads="adb shell"
 alias fd="find . -name"
 alias nj="ninja -j7"
@@ -31,12 +29,20 @@ alias re=readelf
 alias gs="gdbserver 127.0.0.1:1234"
 alias gr="gdb --args"
 
+alias hr="history -r"
+alias hw="history -w"
+alias h="hr;hw"
+
 alias ..="cd .."
 alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
-alias kj="kill -9 $(jobs -p)"
+
+# Run command for each pane in current tmux session
+txall() {
+    tmux list-panes -s  -F '#{session_name}:#{window_index}.#{pane_index}'  | xargs -I PANE tmux send-keys -t PANE "$@" Enter
+}
 
 # Convert binary file to hex text view.
 bh() {
@@ -53,4 +59,13 @@ hv() {
     calc="${calc//x/*}"
     bc -l <<<"scale=10;$calc"
 }
+export no_proxy=shagit60-rd.rnd.huawei.com,mgit-tm.rnd.huawei.com,nkggit05-rd.rnd.huawei.com,10.140.229.162,10.141.105.139,rnd-hisi-kirin-origin.huawei.com,10.97.84.145,10.106.40.162,gerrit-gux.balong.hisilicon.com,gerrit-tl.balong.hisilicon.com,rnd-sh.huawei.com,rnd-hap.huawei.com,rnd-bj-handset.huawei.com,androidxian.huawei.com,rnd-wh.huawei.com,rnd-nonopensource.huawei.com,android.huawei.com,shagit80-rd.rnd.huawei.com,rnd-tc-divs.huawei.com,rnd-whctmphone.huawei.com,10.167.144.58,hz.rnd.huawei.com,10.19.144.92,10.19.144.38,shagit60-rd.rnd.huawei.com,10.184.132.217,
+export PATH="$PATH:/home/s00538726/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
+alias tch="~/app/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++"
+
+alias kj="kill -9 $(jobs -p)"
+
+vid() {
+    cat $1 | vidis.py | less -R
+}
