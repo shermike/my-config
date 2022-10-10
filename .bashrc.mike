@@ -69,3 +69,6 @@ alias kj="kill -9 $(jobs -p)"
 vid() {
     cat $1 | vidis.py | less -R
 }
+
+# treat '-' and '_' as regular word symbols, thereby ctrl+w and ctrl+arrows will work properly.
+WORDCHARS='_-'
