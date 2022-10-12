@@ -59,10 +59,6 @@ hv() {
     calc="${calc//x/*}"
     bc -l <<<"scale=10;$calc"
 }
-export no_proxy=shagit60-rd.rnd.huawei.com,mgit-tm.rnd.huawei.com,nkggit05-rd.rnd.huawei.com,10.140.229.162,10.141.105.139,rnd-hisi-kirin-origin.huawei.com,10.97.84.145,10.106.40.162,gerrit-gux.balong.hisilicon.com,gerrit-tl.balong.hisilicon.com,rnd-sh.huawei.com,rnd-hap.huawei.com,rnd-bj-handset.huawei.com,androidxian.huawei.com,rnd-wh.huawei.com,rnd-nonopensource.huawei.com,android.huawei.com,shagit80-rd.rnd.huawei.com,rnd-tc-divs.huawei.com,rnd-whctmphone.huawei.com,10.167.144.58,hz.rnd.huawei.com,10.19.144.92,10.19.144.38,shagit60-rd.rnd.huawei.com,10.184.132.217,
-export PATH="$PATH:/home/s00538726/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
-alias tch="~/app/android-ndk-r20b/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++"
 
 alias kj="kill -9 $(jobs -p)"
 
