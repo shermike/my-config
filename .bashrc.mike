@@ -1,20 +1,22 @@
 (set -o igncr) 2>/dev/null && set -o igncr; # this comment is needed
 
-export HISTSIZE=99999999999
-export HISTFILESIZE=1000000000
+export HISTSIZE=
+export HISTFILESIZE=500000
 export HISTFILE=~/.bash_eternal_history
 export HISTTIMEFORMAT="%d/%m/%y %T "
 shopt -s histappend
 #PROMPT_COMMAND="history -a; echo -n -e '\033[35m'; date +'%m.%d.%Y %H:%M:%S'" # $PROMPT_COMMAND"
 #PROMPT_COMMAND=
-PROMPT_COMMAND="history -a"
-#PROMPT_COMMAND="history -a; history -r"
+#PROMPT_COMMAND="history -a"
+HISTIGNORE='ls:ll:cd:pwd:bg:fg:history'
 export PS1="\[\033[38;5;76m\]\u@\h:\[$(tput sgr0)\]\[\033[38;5;22m\] \[$(tput sgr0)\]\[\033[38;5;76m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\n\[$(tput sgr0)\]\[\033[38;5;76m\]\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
+export TERM=xterm-256color
 
 alias hreload='history -a; history -r'
 alias l='less -R'
 alias v=vim
 alias vd=vimdiff
+alias cdiff='code --diff'
 alias hex='hexdump -C -v'
 alias t='tig --no-merges'
 alias g=git
@@ -28,6 +30,14 @@ alias rp=realpath
 alias re=readelf
 alias gs="gdbserver 127.0.0.1:1234"
 alias gr="gdb --args"
+alias ht=htop
+# Read previous command output in the less TODO
+#alias rd="!! | less"
+alias kj="kill -9 \$(jobs -p)"
+alias nd="nix develop /home/mike/proj/dbms"
+alias nd2="nix develop /home/mike/proj/dbms2"
+
+alias tonos-cli=/home/mike/src/tonos-cli/target/release/tonos-cli
 
 alias hr="history -r"
 alias hw="history -w"
@@ -38,10 +48,11 @@ alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
+alias disable_aslr="echo 0 | sudo tee /proc/sys/kernel/randomize_va_space"
 
 # Run command for each pane in current tmux session
 txall() {
-    tmux list-panes -s  -F '#{session_name}:#{window_index}.#{pane_index}'  | xargs -I PANE tmux send-keys -t PANE "$@" Enter
+    tmux list-panes -s  -F '#{session_name}:#{window_index}.#{pane_indesx}'  | xargs -I PANE tmux send-keys -t PANE "$@" Enter
 }
 
 # Convert binary file to hex text view.
@@ -60,11 +71,11 @@ hv() {
     bc -l <<<"scale=10;$calc"
 }
 
-alias kj="kill -9 $(jobs -p)"
-
-vid() {
-    cat $1 | vidis.py | less -R
-}
-
 # treat '-' and '_' as regular word symbols, thereby ctrl+w and ctrl+arrows will work properly.
 WORDCHARS='_-'
+
+###############
+export CRYPTO3_INC=" -I/home/mike/proj/crypto3/libs/algebra/include -I/home/mike/proj/crypto3/libs/multiprecision/include -I/home/mike/proj/crypto3/libs/marshalling/core/include -I/home/mike/proj/crypto3/libs/marshalling/algebra/include -I/home/mike/proj/crypto3/libs/marshalling/multiprecision/include -I/home/mike/proj/crypto3/libs/hash/include -I/home/mike/proj/crypto3/libs/block/include/ -I/home/mike/proj/crypto3/libs/zk/include/ -I/home/mike/proj/crypto3/libs/marshalling/zk/include -I/home/mike/proj/crypto3/libs/blueprint/include -I/home/mike/proj/crypto3/libs/math/include "
+
+# pdftolatex
+PATH="/usr/local/texlive/2023/bin/x86_64-linux:${PATH}"
